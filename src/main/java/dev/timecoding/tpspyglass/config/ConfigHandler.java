@@ -7,32 +7,27 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ConfigHandler {
 
-    private TPSpyglass plugin;
+    private final TPSpyglass plugin;
+    private final String newconfigversion = "1.0";
+    private final boolean retry = false;
+    public YamlConfiguration cfg = null;
+    private File f = null;
 
-    public ConfigHandler(TPSpyglass plugin){
+    public ConfigHandler(TPSpyglass plugin) {
         this.plugin = plugin;
     }
 
-    private File f = null;
-    public YamlConfiguration cfg = null;
-
-    private String newconfigversion = "1.0";
-
-    private boolean retry = false;
-
-    public void init(){
+    public void init() {
         plugin.saveDefaultConfig();
         f = new File(plugin.getDataFolder(), "config.yml");
         cfg = YamlConfiguration.loadConfiguration(f);
@@ -40,11 +35,11 @@ public class ConfigHandler {
         checkForConfigUpdate();
     }
 
-    public String getPluginVersion(){
+    public String getPluginVersion() {
         return plugin.getDescription().getVersion();
     }
 
-    public void save(){
+    public void save() {
         try {
             cfg.save(f);
         } catch (IOException e) {
@@ -52,45 +47,45 @@ public class ConfigHandler {
         }
     }
 
-    public void reload(){
+    public void reload() {
         cfg = YamlConfiguration.loadConfiguration(f);
     }
 
-    public YamlConfiguration getConfig(){
+    public YamlConfiguration getConfig() {
         return cfg;
     }
 
-    public void setString(String key, String value){
+    public void setString(String key, String value) {
         cfg.set(key, value);
         save();
     }
 
-    public Integer getInteger(String key){
-        if(keyExists(key)){
+    public Integer getInteger(String key) {
+        if (keyExists(key)) {
             return cfg.getInt(key);
         }
         return 1;
     }
 
-    public String getString(String key){
-        if(keyExists(key)){
+    public String getString(String key) {
+        if (keyExists(key)) {
             return ChatColor.translateAlternateColorCodes('&', cfg.getString(key));
         }
         return "";
     }
 
-    public Boolean getBoolean(String key){
-        if(keyExists(key)){
+    public Boolean getBoolean(String key) {
+        if (keyExists(key)) {
             return cfg.getBoolean(key);
         }
         return false;
     }
 
-    private List<String> getStringList(String key, Player player){
-        if(keyExists(key)){
+    private List<String> getStringList(String key, Player player) {
+        if (keyExists(key)) {
             List<String> list = getConfig().getStringList(key);
             list.replaceAll(msg -> msg.replace("&", "§"));
-            if(player != null){
+            if (player != null) {
                 list.replaceAll(msg -> msg.replace("%player%", player.getName()));
             }
             return list;
@@ -98,18 +93,18 @@ public class ConfigHandler {
         return new ArrayList<>();
     }
 
-    public Material getMaterialByString(String material){
-        for(Material mats : Material.values()){
-            if(mats.name().toLowerCase().equalsIgnoreCase(material.toLowerCase())){
+    public Material getMaterialByString(String material) {
+        for (Material mats : Material.values()) {
+            if (mats.name().equalsIgnoreCase(material)) {
                 return Material.valueOf(material);
             }
         }
         return Material.GRASS_BLOCK;
     }
 
-    public Enchantment getEnchantmentByString(String enchant){
-        for(Enchantment ench : Enchantment.values()){
-            if(ench.toString().toLowerCase().equalsIgnoreCase(enchant.toLowerCase())){
+    public Enchantment getEnchantmentByString(String enchant) {
+        for (Enchantment ench : Enchantment.values()) {
+            if (ench.toString().equalsIgnoreCase(enchant)) {
                 return Enchantment.getByName(enchant);
             }
         }
@@ -121,9 +116,7 @@ public class ConfigHandler {
     }
 
     public boolean configUpdateAvailable() {
-        if (!getNewestConfigVersion().equalsIgnoreCase(getString("config-version")))
-            return true;
-        return false;
+        return !getNewestConfigVersion().equalsIgnoreCase(getString("config-version"));
     }
 
     public void checkForConfigUpdate() {
@@ -162,18 +155,18 @@ public class ConfigHandler {
     }
 
 
-    public Integer getItemSlot(String key){
-        return getInteger("Item."+key+".Slot");
+    public Integer getItemSlot(String key) {
+        return getInteger("Item." + key + ".Slot");
     }
 
-    public Integer readItemSlot(String key){
-        return getInteger(key+".Slot");
+    public Integer readItemSlot(String key) {
+        return getInteger(key + ".Slot");
     }
 
-    public boolean keyExists(String key){
-        if(cfg.get(key) != null){
+    public boolean keyExists(String key) {
+        if (cfg.get(key) != null) {
             return true;
-        }else{
+        } else {
             //FOR DEBUG ONLY
             cfg.set(key, key);
             save();
