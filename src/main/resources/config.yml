@@ -1,0 +1,57 @@
+#########################################################################################
+#  ████████╗██████╗░░██████╗██████╗░██╗░░░██╗░██████╗░██╗░░░░░░█████╗░░██████╗░██████╗  #
+#  ╚══██╔══╝██╔══██╗██╔════╝██╔══██╗╚██╗░██╔╝██╔════╝░██║░░░░░██╔══██╗██╔════╝██╔════╝  #
+#  ░░░██║░░░██████╔╝╚█████╗░██████╔╝░╚████╔╝░██║░░██╗░██║░░░░░███████║╚█████╗░╚█████╗░  #
+#  ░░░██║░░░██╔═══╝░░╚═══██╗██╔═══╝░░░╚██╔╝░░██║░░╚██╗██║░░░░░██╔══██║░╚═══██╗░╚═══██╗  #
+#  ░░░██║░░░██║░░░░░██████╔╝██║░░░░░░░░██║░░░╚██████╔╝███████╗██║░░██║██████╔╝██████╔╝  #
+#  ░░░╚═╝░░░╚═╝░░░░░╚═════╝░╚═╝░░░░░░░░╚═╝░░░░╚═════╝░╚══════╝╚═╝░░╚═╝╚═════╝░╚═════╝░  #
+#########################################################################################
+#                             Version: 1.0 (29.03.2023)                                 #
+#                                Created by TimeCode                                    #
+#  You found a bug or want a new feature to be added to this plugin? I'm here for you:  #
+#                           https://discord.gg/JCHpQsSGxA                               #
+#########################################################################################
+
+#Change the scheduler settings
+Scheduler:
+  #Set the "refresh rate" of the particles, actionbar, etc.
+  #20 Ticks = 1 Second
+  PeriodInTicks: 1
+
+#Set the maximum range in blocks the block can be away
+Range: 1000
+
+#Change the particles, actionbar and sounds (more is coming soon | just write me ideas on discord if you got some: TimeCode#0001)
+Events:
+  #Event which will get triggered if you're looking on a block with a spyglass
+  Looking:
+    #Set the particles
+    Particles:
+      #Set the particle type (All particle-types can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Particle.html)
+      Type: VILLAGER_HAPPY
+      #Set the amount of particles in every scheduler period
+      AmountPerPeriod: 1
+    #Set the actionbar message
+    ActionBar: "&cPress SHIFT to teleport"
+  #Event which will get triggered if you got teleported with shift
+  Teleport:
+    #Set the teleport sound (all sounds can be found here: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html)
+    Sound: ENTITY_ENDERMAN_TELEPORT
+
+#Change this if you want to use permissions
+Permissions:
+  #Change this to "true" if you want to enable it
+  Enabled: false
+  #Change the permission which is needed to use the TPSpyglass
+  Permission: "tpspyglass.use"
+
+#Set the permission for the command /tpspyglass reload
+Command-Permission: tpspyglass.reload
+
+#"bStats is a free and open source website that helps the developer to collect usage data from his plugin" (Source: bstats.org)
+#If you don't want to send me automatic statistics, disable this with changing it to "false"
+bStats: true
+
+#DON'T CHANGE THIS
+#AFTER CHANGING THIS CONFIG WON'T EXIST ANYMORE
+config-version: 1.0

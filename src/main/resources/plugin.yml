@@ -1,0 +1,14 @@
+name: TPSpyglass
+version: 1.0
+main: dev.timecoding.tpspyglass.TPSpyglass
+api-version: 1.19
+authors: [ TimeCoding ]
+description: A plugin which allows the players to teleport to the location where he looks with a spyglass
+website: timecoding.de
+
+commands:
+  tpspyglass:
+    description: "A command which allows server-owners to reload my plugin TPSpyglass"
+    aliases:
+      - "tpsg"
+      - "tpglass"
