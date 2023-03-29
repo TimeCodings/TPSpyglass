@@ -8,35 +8,37 @@ import org.bukkit.command.CommandSender;
 
 public class TPSpyGlassCommand implements CommandExecutor {
 
-    private TPSpyglass plugin;
+    private final TPSpyglass tpSpyglass;
+    private final ConfigHandler config;
 
-    private ConfigHandler configHandler;
-
-    public TPSpyGlassCommand(TPSpyglass plugin){
-        this.plugin = plugin;
-        this.configHandler = this.plugin.getConfigHandler();
+    public TPSpyGlassCommand(TPSpyglass tpSpyglass) {
+        this.tpSpyglass = tpSpyglass;
+        this.config = tpSpyglass.getConfigHandler();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(sender.hasPermission(configHandler.getString("Command-Permission"))){
-            if(args.length == 1) {
-                if (args[0].equalsIgnoreCase("rl") || args[0].equalsIgnoreCase("reload")) {
-                    configHandler.reload();
-                    plugin.stopScheduler();
-                    plugin.startScheduler();
-                    plugin.registerbStats();
-                    sender.sendMessage("§aThe config.yml was successfully reloaded!");
-                }else{
-                    sender.sendMessage("§c/tpspyglass reload");
-                }
-            }else{
-                sender.sendMessage("§c/tpspyglass reload");
-            }
-        }else{
+        if (!sender.hasPermission(config.getString("Command-Permission"))) {
             sender.sendMessage("§cYou do not have the permission to use this command!");
+            return false;
         }
-        return false;
+
+        if (args.length != 1) return sendCommandInfo(sender);
+
+        if (!args[0].equalsIgnoreCase("rl") && !args[0].equalsIgnoreCase("reload"))
+            return sendCommandInfo(sender);
+
+        config.reload();
+        tpSpyglass.stopScheduler();
+        tpSpyglass.startScheduler();
+        tpSpyglass.registerbStats();
+        sender.sendMessage("§aThe config.yml was successfully reloaded!");
+
+        return true;
     }
 
+    private boolean sendCommandInfo(CommandSender sender) {
+        sender.sendMessage("§c/tpspyglass reload");
+        return false;
+    }
 }
